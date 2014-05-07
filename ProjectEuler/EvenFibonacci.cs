@@ -32,35 +32,34 @@ namespace ProjectEuler
         [TestCase(8, 21)]
         [TestCase(9, 34)]
         [TestCase(10, 55)]
-
         public void GetFibonaciElement(int n, int expectedElement)
         {
             Assert.That(EvenFibonacci.FibonaciElement(n), Is.EqualTo(expectedElement));
         }
 
         [TestCase(1, 0)]
-        [TestCase(2, 0)]
+        [TestCase(2, 2)]
         [TestCase(3, 2)]
         [TestCase(4, 2)]
         [TestCase(5, 2)]
-        [TestCase(6, 10)]
-        [TestCase(7, 10)]
+        [TestCase(6, 2)]
+        [TestCase(7, 2)]
         [TestCase(8, 10)]
-        [TestCase(9, 44)]
-        [TestCase(10, 44)]
-        [TestCase(100000, 7203226363417812526)]
-        [TestCase(1000000, 7203226363417812526)]
-        public void SumOfEvenFibonacciSequenceOfLength1(int length, ulong expectedResult)
+        [TestCase(9, 10)]
+        [TestCase(10, 10)]
+        [TestCase(1000, 798)]
+        [TestCase(4000000, 4613732)]
+        public void SumOfEvenFibonacciElementsNotExceeding(int maxLength, int expectedResult)
         {
-            Assert.That(EvenFibonacci.SumOfEvenElements(length), Is.EqualTo(expectedResult));
+            Assert.That(EvenFibonacci.SumOfEvenFibonacciElementsNotExceeding(maxLength), Is.EqualTo(expectedResult));
         }
     }
 
     public static class EvenFibonacci
     {
-        public static List<ulong> FibonaciSequence(int n)
+        public static List<int> FibonaciSequence(int n)
         {
-            var fibonacciSequence = new List<ulong>();
+            var fibonacciSequence = new List<int>();
 
             Enumerable.Range(1, n)
                       .ToList()
@@ -69,29 +68,30 @@ namespace ProjectEuler
 
         }
 
-        public static ulong FibonaciElement(int n)
+        public static int FibonaciElement(int n)
         {
-            //recursive version
-            //if (n < 3)
-            //    return 1;
 
-            //return FibonaciElement(n - 1) + FibonaciElement(n - 2);
+            if (n < 3)
+                return 1;
 
-            ulong prev = 0;
-            ulong next = 1;
-            for (var i = 1; i < n; i++)
+            return FibonaciElement(n - 1) + FibonaciElement(n - 2);
+        }
+
+        public static int SumOfEvenFibonacciElementsNotExceeding(int n)
+        {
+            var sum = 0;
+            var current = 1;
+            var i = 2;
+            while (current <= n)
             {
-                var sum = prev + next;
-                prev = next;
-                next = sum;
+                if (current % 2 == 0)
+                    sum += current;
+
+                current = FibonaciElement(i);
+                i++;
             }
-            return next;
+            return sum;
         }
 
-        public static ulong SumOfEvenElements(int n)
-        {
-            return FibonaciSequence(n).Where(el => el%2 == 0).Aggregate<ulong, ulong>(0, (current, el) => current + el);
-            //return FibonaciSequence(n).Where(element => element % 2 == 0).Sum();
-        }
     }
 }
