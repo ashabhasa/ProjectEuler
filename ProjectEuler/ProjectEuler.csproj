@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EvenFibonacci.cs" />
+    <Compile Include="LargestPrimeFactor.cs" />
     <Compile Include="MultipleOfThreeOrFiveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
